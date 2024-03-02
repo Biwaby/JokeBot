@@ -1,2 +1,18 @@
-# JokeBot
-Telegram joke bot developed on Java+Spring Boot
+# Анекдотический телеграм-бот на Java+Spring Boot+JPA
+`Задание по 1-ой лабораторной работе по дисциплине "Технологии программирования"(Java)`
+
+Реализован чат-бот для Telegram с функционалом выдачи анекдотов. Имеется HTTP-интерфейс для добавления/изменения/удаления/просмотра анекдотов.
+
+Для создания бота был использован [Java Telegram Bot API](https://github.com/pengrad/java-telegram-bot-api/tree/master).
+
+HTTP-интерфейс работает через JSON:
+```
+GET /jokes - выдача всех шуток
+GET /jokes/id - выдача шутки с определенным ID
+POST /jokes - создание новой шутки
+PUT /jokes/id - изменение шутки
+DELETE /jokes/id - удаление шутки
+```
+- Система сборки: Gradle
+- Java: 21
+- Spring Boot: 3.2.3
