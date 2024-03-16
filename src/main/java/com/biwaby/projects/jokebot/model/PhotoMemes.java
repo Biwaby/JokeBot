@@ -1,11 +1,8 @@
 package com.biwaby.projects.jokebot.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDate;
 
 @Getter
@@ -13,9 +10,9 @@ import java.time.LocalDate;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "jokes")
-@Table(name = "jokes")
-public class Joke {
+@Entity(name = "photoMemes")
+@Table(name = "photoMemes")
+public class PhotoMemes {
 
     @Id
     @Column(name = "id")
@@ -23,8 +20,8 @@ public class Joke {
     private Long id;
 
     @Lob
-    @Column(name = "joke", columnDefinition = "TEXT")
-    private String joke;
+    @Column(name = "photo_path", columnDefinition = "TEXT")
+    private String photoPath;
 
     @Column(name = "creation_date")
     private LocalDate creationDate;
