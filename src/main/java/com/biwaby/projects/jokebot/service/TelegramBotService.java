@@ -50,7 +50,7 @@ public class TelegramBotService {
         }
         else if (message.equals("Показать все анекдоты")) {
             for (Joke joke : jokeList) {
-                botAnswer += joke.getId() + ".\n<strong>" + joke.getJoke() + "</strong>\n\n" + "Дата создания: " + joke.getCreationDate() + "\n" + "Дата изменения: " + joke.getUpdatingDate() + "\n\n\n";
+                botAnswer += "<strong>" + joke.getJoke() + "</strong>\n\n" + "Дата создания: " + joke.getCreationDate() + "\n" + "Дата изменения: " + joke.getUpdatingDate() + "\n\n\n";
             }
         }
         else {
