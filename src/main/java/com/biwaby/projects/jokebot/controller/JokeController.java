@@ -3,11 +3,10 @@ package com.biwaby.projects.jokebot.controller;
 import com.biwaby.projects.jokebot.model.Joke;
 import com.biwaby.projects.jokebot.service.JokeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/jokes")
@@ -16,23 +15,28 @@ public class JokeController {
 
     private final JokeService jokeService;
 
-    // POST /jokes - принимает JSON шутки в Body. Устанавливает дату создания.
+    // POST /jokes - добавляет новую шутку
     @PostMapping
-    ResponseEntity<Void> addJoke(@RequestBody Joke joke) {
-        jokeService.addJoke(joke);
-        return ResponseEntity.ok().build();
+    ResponseEntity<Joke> addJoke(@RequestBody Joke joke) {
+        return ResponseEntity.ok(jokeService.addJoke(joke));
     }
 
-    // GET /jokes - не принимает никаких параметров, выдает список шуток по модели
+    // GET /jokes - выдает все шутки
     @GetMapping
-    ResponseEntity<List<Joke>> getJokes() {
-        return ResponseEntity.ok(jokeService.getAllJokes());
+    ResponseEntity<Page<Joke>> getAllJokes(@RequestParam int page) {
+        return ResponseEntity.ok(jokeService.getAllJokes(page));
     }
 
-    // GET /jokes/id - принимает id как параметр пути, выдает шутку с данным id или же 404 если ничего не нашлось
+    // GET /jokes/id - выдает шутку с данным id или же 404 если ничего не нашлось
     @GetMapping("/{id}")
     ResponseEntity<Joke> getJokeById(@PathVariable Long id) {
         return jokeService.getJokeById(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // GET /topFiveJokes - выдает список топ-5 шуток по количество просмотров пользователей
+    @GetMapping("/topFiveJokes")
+    ResponseEntity<List<Joke>> getTopFive() {
+        return ResponseEntity.ok(jokeService.getTopFive());
     }
 
     // DELETE /jokes/id - удаляет шутку с данным ID
@@ -46,7 +50,7 @@ public class JokeController {
         }
     }
 
-    // PUT /jokes/id - принимает id как параметр пути, изменяет шутку с данным id. Поле id в Body - игнорируется.
+    // PUT /jokes/id - изменение шутки с данным ID
     // Устанавливает дату обновления.
     @PutMapping("/{id}")
     ResponseEntity<Void> editJoke(@PathVariable Long id, @RequestBody Joke joke) {

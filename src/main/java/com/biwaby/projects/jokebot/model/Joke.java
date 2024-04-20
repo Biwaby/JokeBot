@@ -1,12 +1,10 @@
 package com.biwaby.projects.jokebot.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import java.time.LocalDate;
+import lombok.*;
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,20 +13,27 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity(name = "jokes")
 @Table(name = "jokes")
+@EqualsAndHashCode
 public class Joke {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "joke_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(sequenceName = "joke_seq", name = "joke_seq", allocationSize = 1)
     private Long id;
 
     @Lob
     @Column(name = "joke", columnDefinition = "TEXT")
     private String joke;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "creation_date")
-    private LocalDate creationDate;
+    private Date creationDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "update_date")
-    private LocalDate updatingDate;
+    private Date updatingDate;
+
+    @OneToMany(mappedBy = "joke", cascade = CascadeType.ALL)
+    private List<JokeCallLog> jokeCallHistory;
 }
