@@ -1,8 +1,9 @@
-package com.biwaby.projects.jokebot.service;
+package com.biwaby.projects.jokebot.service.implementations;
 
 import com.biwaby.projects.jokebot.model.Joke;
 import com.biwaby.projects.jokebot.model.JokeCallLog;
 import com.biwaby.projects.jokebot.repository.JokesRepository;
+import com.biwaby.projects.jokebot.service.interfaces.JokeService;
 import com.biwaby.projects.jokebot.utils.NowService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,6 @@ public class JokeServiceImpl implements JokeService {
 
     @Override
     public Joke addJoke(Joke joke) {
-        //joke.setId(null);
         joke.setCreationDate(nowService.getCurrentDate());
         joke.setUpdatingDate(nowService.getCurrentDate());
         return jokesRepository.saveAndFlush(joke);
@@ -55,6 +55,8 @@ public class JokeServiceImpl implements JokeService {
     @Transactional
     @Override
     public List<Joke> getTopFive() {
+        return jokesRepository.findTopFiveJokes();
+        /*
         List<Joke> jokeList = jokesRepository.findAll();
         jokeList.sort(Comparator.comparing(joke -> joke.getJokeCallHistory().size(), Comparator.reverseOrder()));
 
@@ -65,6 +67,7 @@ public class JokeServiceImpl implements JokeService {
             List<Joke> topList = jokeList.subList(0, 5);
             return topList;
         }
+        */
     }
 
     @Override

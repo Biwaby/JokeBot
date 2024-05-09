@@ -1,6 +1,7 @@
 package com.biwaby.projects.jokebot.service;
 
 import com.biwaby.projects.jokebot.model.Joke;
+import com.biwaby.projects.jokebot.service.interfaces.JokeService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;

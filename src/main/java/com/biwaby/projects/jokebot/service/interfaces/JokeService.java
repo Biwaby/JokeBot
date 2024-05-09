@@ -1,4 +1,4 @@
-package com.biwaby.projects.jokebot.service;
+package com.biwaby.projects.jokebot.service.interfaces;
 
 import com.biwaby.projects.jokebot.model.Joke;
 import org.springframework.data.domain.Page;

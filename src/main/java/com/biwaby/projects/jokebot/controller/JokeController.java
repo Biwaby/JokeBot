@@ -1,7 +1,7 @@
 package com.biwaby.projects.jokebot.controller;
 
 import com.biwaby.projects.jokebot.model.Joke;
-import com.biwaby.projects.jokebot.service.JokeService;
+import com.biwaby.projects.jokebot.service.interfaces.JokeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class JokeController {
         return ResponseEntity.ok(jokeService.addJoke(joke));
     }
 
-    // GET /jokes - выдает все шутки
+    // GET /jokes?page=num_page - выдает все шутки с пагинацией
     @GetMapping
     ResponseEntity<Page<Joke>> getAllJokes(@RequestParam int page) {
         return ResponseEntity.ok(jokeService.getAllJokes(page));

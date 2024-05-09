@@ -1,0 +1,175 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1715211958992-1
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: joke_call_log_seq
+            startValue: 1
+  - changeSet:
+      id: 1715211958992-2
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: joke_seq
+            startValue: 1
+  - changeSet:
+      id: 1715211958992-3
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: user_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1715211958992-4
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_jokes
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: joke
+                  type: TEXT
+              - column:
+                  name: creation_date
+                  type: DATETIME
+              - column:
+                  name: update_date
+                  type: DATETIME
+            tableName: jokes
+  - changeSet:
+      id: 1715211958992-5
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_jokescalllog
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: joke_id
+                  type: BIGINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: call_date
+                  type: DATETIME
+            tableName: jokes_call_log
+  - changeSet:
+      id: 1715211958992-6
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_lnk_user_roles
+                  name: role_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_lnk_user_roles
+                  name: user_id
+                  type: BIGINT
+            tableName: lnk_user_roles
+  - changeSet:
+      id: 1715211958992-7
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_roles
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+            tableName: roles
+  - changeSet:
+      id: 1715211958992-8
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_users
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+            tableName: users
+  - changeSet:
+      id: 1715211958992-9
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: joke_id
+            baseTableName: jokes_call_log
+            constraintName: FK_JOKESCALLLOG_ON_JOKE
+            referencedColumnNames: id
+            referencedTableName: jokes
+  - changeSet:
+      id: 1715211958992-10
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: role_id
+            baseTableName: lnk_user_roles
+            constraintName: fk_lnkuserol_on_role
+            referencedColumnNames: id
+            referencedTableName: roles
+  - changeSet:
+      id: 1715211958992-11
+      author: Biwaby (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: lnk_user_roles
+            constraintName: fk_lnkuserol_on_user
+            referencedColumnNames: id
+            referencedTableName: users
+
