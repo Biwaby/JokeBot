@@ -34,6 +34,7 @@ PUT /users/grant?userId=id&roleId=id - выдача роли пользоват�
 PUT /users/revoke?userId=id&roleId=id - отозвать роль у пользователя
 DELETE /users/id - удаление пользователя
 ```
+---
 - Система сборки: Gradle
 - Java: 21
 - Spring Boot: 3.2.3
