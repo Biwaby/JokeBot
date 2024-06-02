@@ -5,7 +5,7 @@
 
 Для создания бота был использован [Java Telegram Bot API](https://github.com/pengrad/java-telegram-bot-api/tree/master).
 
-## **Авторизация:**
+## **Авторизация Spring Security:**
 
 ### Роли:
 ```
