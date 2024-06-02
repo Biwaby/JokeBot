@@ -26,14 +26,15 @@ public class Joke {
     @Column(name = "joke", columnDefinition = "TEXT")
     private String joke;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "Europe/Moscow")
     @Column(name = "creation_date")
     private Date creationDate;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "Europe/Moscow")
     @Column(name = "update_date")
     private Date updatingDate;
 
     @OneToMany(mappedBy = "joke", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<JokeCallLog> jokeCallHistory;
 }

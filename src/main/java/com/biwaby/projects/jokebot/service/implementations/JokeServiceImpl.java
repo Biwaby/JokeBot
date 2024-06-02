@@ -1,10 +1,11 @@
 package com.biwaby.projects.jokebot.service.implementations;
 
+import com.biwaby.projects.jokebot.exceptions.IncorrectJokeException;
+import com.biwaby.projects.jokebot.exceptions.JokeNotFoundException;
 import com.biwaby.projects.jokebot.model.Joke;
 import com.biwaby.projects.jokebot.model.JokeCallLog;
 import com.biwaby.projects.jokebot.repository.JokesRepository;
 import com.biwaby.projects.jokebot.service.interfaces.JokeService;
-import com.biwaby.projects.jokebot.utils.NowService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,13 +19,16 @@ import java.util.*;
 public class JokeServiceImpl implements JokeService {
 
     private final JokesRepository jokesRepository;
-    private final NowService nowService;
 
     @Override
     public Joke addJoke(Joke joke) {
-        joke.setCreationDate(nowService.getCurrentDate());
-        joke.setUpdatingDate(nowService.getCurrentDate());
-        return jokesRepository.saveAndFlush(joke);
+        if (joke.getJoke().isEmpty() || joke.getJoke() == null) {
+            throw new IncorrectJokeException();
+        }
+
+        joke.setCreationDate(new Date());
+        joke.setUpdatingDate(new Date());
+        return jokesRepository.save(joke);
     }
 
     @Override
@@ -33,67 +37,39 @@ public class JokeServiceImpl implements JokeService {
     }
 
     @Override
-    public Optional<Joke> getJokeById(Long id) {
-        Optional<Joke> optionalJoke = jokesRepository.findById(id);
-        if (optionalJoke.isPresent()) {
-            Joke currentJoke = optionalJoke.get();
-            currentJoke.getJokeCallHistory().add(new JokeCallLog(null, currentJoke, null, nowService.getCurrentDate()));
-            jokesRepository.saveAndFlush(currentJoke);
-        }
-        return jokesRepository.findById(id);
+    public Joke getJokeById(Long id) {
+        Joke joke = jokesRepository.findById(id).orElseThrow(JokeNotFoundException::new);
+        joke.getJokeCallHistory().add(new JokeCallLog(null, joke, null, new Date()));
+        jokesRepository.save(joke);
+        return joke;
     }
 
     @Transactional
     @Override
     public Joke getRandomJoke(Long userId) {
-        List<Joke> jokeList = jokesRepository.findAll();
-        Joke randomJoke = jokeList.get(new Random().nextInt(jokeList.size()));
-        randomJoke.getJokeCallHistory().add(new JokeCallLog(null, randomJoke, userId, nowService.getCurrentDate()));
-        return jokesRepository.saveAndFlush(randomJoke);
+        Joke radndomJoke = jokesRepository.getRandomJoke();
+        radndomJoke.getJokeCallHistory().add(new JokeCallLog(null, radndomJoke, userId, new Date()));
+        return jokesRepository.save(radndomJoke);
     }
 
     @Transactional
     @Override
     public List<Joke> getTopFive() {
         return jokesRepository.findTopFiveJokes();
-        /*
-        List<Joke> jokeList = jokesRepository.findAll();
-        jokeList.sort(Comparator.comparing(joke -> joke.getJokeCallHistory().size(), Comparator.reverseOrder()));
-
-        if (jokeList.size() < 5) {
-            return jokeList;
-        }
-        else {
-            List<Joke> topList = jokeList.subList(0, 5);
-            return topList;
-        }
-        */
     }
 
     @Override
-    public boolean deleteJoke(Long id) {
-        Optional<Joke> joke = jokesRepository.findById(id);
-        if (joke.isPresent()) {
-            jokesRepository.delete(joke.get());
-            return true;
-        }
-        else {
-            return false;
-        }
+    public void deleteJoke(Long id) {
+        Joke joke = jokesRepository.findById(id).orElseThrow(JokeNotFoundException::new);
+        jokesRepository.delete(joke);
     }
 
     @Override
-    public boolean editJoke(Long id, Joke joke) {
-        Optional<Joke> editableJoke = jokesRepository.findById(id);
-        if (editableJoke.isPresent()) {
-            Joke newJoke = editableJoke.get();
-            newJoke.setJoke(joke.getJoke());
-            newJoke.setUpdatingDate(nowService.getCurrentDate());
-            jokesRepository.save(newJoke);
-            return true;
-        }
-        else {
-            return false;
-        }
+    public Joke editJoke(Long id, Joke joke) {
+        Joke newJoke = jokesRepository.findById(id).orElseThrow(JokeNotFoundException::new);
+        newJoke.setJoke(joke.getJoke());
+        newJoke.setUpdatingDate(new Date());
+        jokesRepository.save(newJoke);
+        return newJoke;
     }
 }

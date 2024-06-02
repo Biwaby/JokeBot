@@ -29,6 +29,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/jokes/{id}").hasAnyAuthority("MODERATOR", "ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/jokes/{id}").hasAnyAuthority("MODERATOR", "ADMIN")
                                 // только для имеющих роль ADMIN
+                                .requestMatchers(HttpMethod.GET, "/actuator/**").hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/users/**").hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/users/**").hasAuthority("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("ADMIN")

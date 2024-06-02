@@ -32,9 +32,9 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleException(UserNotFoundException e) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.status(404).body(
                 new ErrorResponse(
-                        400L,
+                        404L,
                         "Пользователь не найден"
                 )
         );
@@ -42,9 +42,9 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResponse(RoleNotFoundException e) {
-        return ResponseEntity.status(400).body(
+        return ResponseEntity.status(404).body(
                 new ErrorResponse(
-                        400L,
+                        404L,
                         "Роль не найдена"
                 )
         );
@@ -56,6 +56,26 @@ public class ExceptionsHandler {
                 new ErrorResponse(
                         400L,
                         "Пользователь не владеет данной ролью"
+                )
+        );
+    }
+
+    @ExceptionHandler(JokeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResponse(JokeNotFoundException e) {
+        return ResponseEntity.status(404).body(
+                new ErrorResponse(
+                        404L,
+                        "Шутка не найдена"
+                )
+        );
+    }
+
+    @ExceptionHandler(IncorrectJokeException.class)
+    public ResponseEntity<ErrorResponse> handleResponse(IncorrectJokeException e) {
+        return ResponseEntity.status(400).body(
+                new ErrorResponse(
+                        400L,
+                        "Введена некорректная шутка (пустое или иное значение)"
                 )
         );
     }

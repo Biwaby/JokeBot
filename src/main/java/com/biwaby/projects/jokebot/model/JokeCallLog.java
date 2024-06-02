@@ -29,7 +29,7 @@ public class JokeCallLog {
     @Column(name = "user_id")
     private Long userId;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "Europe/Moscow")
     @Column(name = "call_date")
     private Date callDate;
 }

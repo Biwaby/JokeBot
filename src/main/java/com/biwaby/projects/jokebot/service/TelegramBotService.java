@@ -12,6 +12,8 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,7 +52,9 @@ public class TelegramBotService {
         if (!jokesFromPage.isEmpty()) {
             answer = "Страница " + (page.getNumber() + 1) + " / " + page.getTotalPages() + "\n\n";
             for (Joke joke : jokesFromPage) {
-                answer += joke.getJoke() + "\n\n" + "Дата создания: " + joke.getCreationDate() + "\n" + "Дата изменения: " + joke.getUpdatingDate() + "\n\n\n";
+                answer += joke.getJoke() + "\n\n" +
+                        "Дата создания: " + new SimpleDateFormat("HH:mm:ss (dd.MM.yyyy)").format(joke.getCreationDate()) + "\n" +
+                        "Дата изменения: " + new SimpleDateFormat("HH:mm:ss (dd.MM.yyyy)").format(joke.getUpdatingDate()) + "\n\n\n";
             }
         }
         else {
@@ -59,7 +63,7 @@ public class TelegramBotService {
         return answer;
     }
 
-    private void handleUpdate(Update update) {
+    public void handleUpdate(Update update) {
         String botAnswer = "";
         boolean isPagging = false;
 
@@ -71,12 +75,16 @@ public class TelegramBotService {
             }
             else if (message.equals("Случайный анекдот")) {
                 Joke randomJoke = jokeService.getRandomJoke(update.message().from().id());
-                botAnswer = "<strong>" + randomJoke.getJoke() + "</strong>\n\n" + "Дата создания: " + randomJoke.getCreationDate() + "\n" + "Дата изменения: " + randomJoke.getUpdatingDate() + "\n\n\n";
+                botAnswer = "<strong>" + randomJoke.getJoke() + "</strong>\n\n" +
+                        "Дата создания: " + new SimpleDateFormat("HH:mm:ss (dd.MM.yyyy)").format(randomJoke.getCreationDate()) + "\n" +
+                        "Дата изменения: " + new SimpleDateFormat("HH:mm:ss (dd.MM.yyyy)").format(randomJoke.getUpdatingDate()) + "\n\n\n";
             }
             else if (message.equals("Топ-5 популярных анекдотов")) {
                 List<Joke> topList = jokeService.getTopFive();
                 for (Joke joke : topList) {
-                    botAnswer += "<strong>" + joke.getJoke() + "</strong>\n\n" + "Дата создания: " + joke.getCreationDate() + "\n" + "Дата изменения: " + joke.getUpdatingDate() + "\n\n\n";
+                    botAnswer += "<strong>" + joke.getJoke() + "</strong>\n\n" +
+                            "Дата создания: " + new SimpleDateFormat("HH:mm:ss (dd.MM.yyyy)").format(joke.getCreationDate()) + "\n" +
+                            "Дата изменения: " + new SimpleDateFormat("HH:mm:ss (dd.MM.yyyy)").format(joke.getUpdatingDate()) + "\n\n\n";
                 }
             }
             else if (message.equals("Показать все анекдоты")) {
@@ -100,7 +108,7 @@ public class TelegramBotService {
                 }
             }
             else {
-                botAnswer = "Прости, я не понимаю что ты хочешь(";
+                botAnswer = "Прости, я не понимаю чего ты хочешь(";
             }
 
             if (isPagging) {
